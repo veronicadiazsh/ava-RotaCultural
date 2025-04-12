@@ -1,60 +1,81 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import BotaoLogin from '../components/BotaoLogin';
 
-export default function LoginScreen({ navigation }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+export default function LoginScreen({ aoLogar }) {
+  const [usuario, setUsuario] = useState('');
+  const [senha, setSenha] = useState('');
 
-  const handleLogin = () => {
-    if (username.trim() && password.trim()) {
-      navigation.navigate('Home', { user: username });
+  const fazerLogin = () => {
+    if (usuario.trim() && senha.trim()) {
+      aoLogar(usuario);
     } else {
-      Alert.alert('Atenção', 'Preencha todos os campos!');
+      Alert.alert('Erro', 'Preencha todos os campos!');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Rota Cultural</Text>
+    <TouchableWithoutFeedback onPress={() => {}}>
+      <View style={styles.container}>
+        <Text style={styles.titulo}>Rota Cultural</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Usuário ou E-mail"
-        onChangeText={setUsername}
-        value={username}
-      />
+        {/* Campo de Usuário */}
+        <Text style={styles.texto}>Usuário ou E-mail</Text>
+        <TextInput
+          style={styles.input}
+          value={usuario}
+          onChangeText={setUsuario}
+          autoCapitalize="none"
+          placeholder="Digite seu usuário ou e-mail"
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        secureTextEntry
-        onChangeText={setPassword}
-        value={password}
-      />
+        {/* Campo de Senha */}
+        <Text style={styles.texto}>Senha</Text>
+        <TextInput
+          style={styles.input}
+          value={senha}
+          onChangeText={setSenha}
+          secureTextEntry
+          autoCapitalize="none"
+          placeholder="Digite sua senha"
+        />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
-    </View>
+        {/* Botão de login */}
+        <BotaoLogin aoPressionar={fazerLogin} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
-  title: { fontSize: 28, textAlign: 'center', marginBottom: 40, fontWeight: 'bold' },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#f4f4f9',
+  },
+  titulo: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 40,
+  },
+  texto: {
+    fontSize: 18,
+    marginBottom: 8,
+    color: '#333',
+  },
   input: {
     height: 50,
-    borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 8,
+    borderColor: '#ddd',
+    paddingLeft: 15,
     marginBottom: 20,
-    paddingHorizontal: 10,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#888',
   },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonText: { color: '#fff', fontSize: 16 },
 });
